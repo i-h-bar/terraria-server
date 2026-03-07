@@ -1,0 +1,38 @@
+services:
+  terraria-server:
+    build:
+      context: .
+      args:
+        TERRARIA_VERSION: ${TERRARIA_VERSION:-1455}
+    image: terraria-server:latest
+    container_name: terraria-server
+    restart: unless-stopped
+    ports:
+      - "7777:7777"
+    volumes:
+      - ${TERRARIA_WORLDS_DIR}:/root/.local/share/Terraria/Worlds/
+    environment:
+      - TERRARIA_WORLD=${TERRARIA_WORLD:-}
+      - TERRARIA_MAX_PLAYERS=${TERRARIA_MAX_PLAYERS:-16}
+      - TERRARIA_PORT=7777
+    networks:
+      - terraria_network
+    stdin_open: true
+    tty: true
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok-tunnel
+    restart: unless-stopped
+    command:
+      - "tcp"
+      - "terraria-server:7777"
+      - "--log=stdout"
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    networks:
+      - terraria_network
+
+networks:
+  terraria_network:
+    driver: bridge
