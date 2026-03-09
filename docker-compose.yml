@@ -3,7 +3,7 @@ services:
     build:
       context: ./terraria-server
       args:
-        TERRARIA_VERSION: ${TERRARIA_VERSION:-1455}
+        TERRARIA_VERSION: ${TERRARIA_VERSION:-1456}
     image: terraria-server:latest
     container_name: terraria-server
     restart: unless-stopped

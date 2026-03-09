@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-ARG TERRARIA_VERSION=1455
+ARG TERRARIA_VERSION=1456
 
 WORKDIR /terraria
 
