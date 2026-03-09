@@ -1,14 +1,12 @@
 services:
   terraria-server:
     build:
-      context: .
+      context: ./terraria-server
       args:
         TERRARIA_VERSION: ${TERRARIA_VERSION:-1455}
     image: terraria-server:latest
     container_name: terraria-server
     restart: unless-stopped
-    ports:
-      - "7777:7777"
     volumes:
       - ${TERRARIA_WORLDS_DIR}:/root/.local/share/Terraria/Worlds/
     environment:
@@ -17,9 +15,26 @@ services:
       - TERRARIA_PORT=7777
     networks:
       terraria_network:
-        ipv4_address: 172.18.0.10
+        ipv4_address: ${TERRARIA_SERVER_IP:-172.18.0.5}
     stdin_open: true
     tty: true
+
+  tcp-guard:
+    build:
+      context: ./tcp-guard
+    image: tcp-guard:latest
+    container_name: tcp-guard
+    restart: unless-stopped
+    depends_on:
+      - terraria-server
+    environment:
+      - TCP_GUARD_MAX_CONN=${TCP_GUARD_MAX_CONN:-2}
+      - TCP_GUARD_PROXY_TIMEOUT=${TCP_GUARD_PROXY_TIMEOUT:-3h}
+      - TCP_GUARD_CONNECT_TIMEOUT=${TCP_GUARD_CONNECT_TIMEOUT:-5s}
+      - TCP_GUARD_PREREAD_TIMEOUT=${TCP_GUARD_PREREAD_TIMEOUT:-5s}
+    networks:
+      terraria_network:
+        ipv4_address: ${TCP_GUARD_IP:-172.18.0.10}
 
   playit:
     image: ghcr.io/playit-cloud/playit-agent:latest
@@ -35,4 +50,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.0.0/24
+        - subnet: ${DOCKER_SUBNET:-172.18.0.0/24}
