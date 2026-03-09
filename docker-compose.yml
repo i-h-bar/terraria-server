@@ -16,23 +16,23 @@ services:
       - TERRARIA_MAX_PLAYERS=${TERRARIA_MAX_PLAYERS:-16}
       - TERRARIA_PORT=7777
     networks:
-      - terraria_network
+      terraria_network:
+        ipv4_address: 172.18.0.10
     stdin_open: true
     tty: true
 
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: ngrok-tunnel
+  playit:
+    image: ghcr.io/playit-cloud/playit-agent:latest
+    container_name: playit-tunnel
     restart: unless-stopped
-    command:
-      - "tcp"
-      - "terraria-server:7777"
-      - "--log=stdout"
     environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+      - SECRET_KEY=${PLAYIT_SECRET_KEY}
     networks:
       - terraria_network
 
 networks:
   terraria_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24

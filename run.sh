@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REQUIRED_VARS="TERRARIA_WORLDS_DIR NGROK_AUTHTOKEN"
+REQUIRED_VARS="TERRARIA_WORLDS_DIR PLAYIT_SECRET_KEY"
 ENV_FILE="./.env"
 
 if [ -f "$ENV_FILE" ]; then
@@ -28,9 +28,4 @@ echo "Building and starting Docker containers..."
 docker compose build
 docker compose up -d
 
-sleep 5
-
-url=$(docker logs ngrok-tunnel 2>&1 | grep "url=" | awk -F'url=' '{print $2}' | sed 's/tcp:\/\///' | tr -d '\r')
-echo "ngrok tunnel URL: $url"
-
-echo "Script finished."
+echo "Script finished. Check your tunnel address at https://playit.gg"
