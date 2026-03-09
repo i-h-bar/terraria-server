@@ -126,7 +126,7 @@ Raise the limit in `.env`:
 TCP_GUARD_MAX_CONN=4
 ```
 
-Then restart: `./restart.sh`
+Then restart the tcp guard: `docker stop tcp-guard` and the `docker start tcp-guard`
 
 ---
 
