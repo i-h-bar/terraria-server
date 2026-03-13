@@ -1,0 +1,12 @@
+/home/joew/repos/terraria-server/target/debug/deps/inotify-d6e7b0eaacc598a9.d: /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/lib.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/events.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/fd_guard.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/inotify.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/util.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/watches.rs
+
+/home/joew/repos/terraria-server/target/debug/deps/libinotify-d6e7b0eaacc598a9.rlib: /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/lib.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/events.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/fd_guard.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/inotify.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/util.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/watches.rs
+
+/home/joew/repos/terraria-server/target/debug/deps/libinotify-d6e7b0eaacc598a9.rmeta: /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/lib.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/events.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/fd_guard.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/inotify.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/util.rs /home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/watches.rs
+
+/home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/lib.rs:
+/home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/events.rs:
+/home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/fd_guard.rs:
+/home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/inotify.rs:
+/home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/util.rs:
+/home/joew/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/inotify-0.11.1/src/watches.rs:
