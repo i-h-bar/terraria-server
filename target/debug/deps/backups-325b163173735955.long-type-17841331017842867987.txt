@@ -1,0 +1,3 @@
+std::sync::mpsc::Sender<std::result::Result<notify_debouncer_full::notify::Event, notify_debouncer_full::notify::Error>>
+std::sync::mpsc::Sender<std::result::Result<notify_debouncer_full::notify::Event, notify_debouncer_full::notify::Error>>: DebounceEventHandler
+std::sync::mpsc::Sender<std::result::Result<Vec<DebouncedEvent>, Vec<notify_debouncer_full::notify::Error>>>
