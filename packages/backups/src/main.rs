@@ -1,9 +1,12 @@
 use dotenv::dotenv;
+use notify_debouncer_full::{
+    DebounceEventResult, new_debouncer,
+    notify::{Error, EventKind, RecursiveMode, Result},
+};
 use std::collections::HashSet;
 use std::env;
-use std::{path::Path, sync::mpsc, fs};
-use notify_debouncer_full::{new_debouncer, notify::*, DebounceEventResult};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::{fs, path::Path, sync::mpsc};
 
 fn backup_file(src: &Path, backup_dir: &Path, max_saves: usize) {
     if !src.is_file() {
@@ -24,10 +27,11 @@ fn backup_file(src: &Path, backup_dir: &Path, max_saves: usize) {
         None => return,
     };
 
-    let suffix = format!("_{}", file_name);
+    log::info!("Backing up {}", src.display());
+    let suffix = format!("_{file_name}");
     let mut existing: Vec<(u64, std::path::PathBuf)> = match fs::read_dir(backup_dir) {
         Ok(entries) => entries
-            .filter_map(|e| e.ok())
+            .filter_map(std::result::Result::ok)
             .filter_map(|e| {
                 let name = e.file_name().to_string_lossy().into_owned();
                 let ts = name.strip_suffix(&suffix)?.parse::<u64>().ok()?;
@@ -35,7 +39,7 @@ fn backup_file(src: &Path, backup_dir: &Path, max_saves: usize) {
             })
             .collect(),
         Err(e) => {
-            log::error!("Failed to read backup dir: {:?}", e);
+            log::error!("Failed to read backup dir: {e:?}");
             return;
         }
     };
@@ -45,8 +49,8 @@ fn backup_file(src: &Path, backup_dir: &Path, max_saves: usize) {
     while existing.len() >= max_saves {
         let (_, oldest) = existing.remove(0);
         match fs::remove_file(&oldest) {
-            Ok(_) => log::info!("Removed old backup {:?}", oldest),
-            Err(e) => log::error!("Failed to remove old backup {:?}: {:?}", oldest, e),
+            Ok(()) => log::info!("Removed old backup {}", oldest.display()),
+            Err(e) => log::error!("Failed to remove old backup {}: {:?}", oldest.display(), e),
         }
     }
 
@@ -54,10 +58,10 @@ fn backup_file(src: &Path, backup_dir: &Path, max_saves: usize) {
         .duration_since(UNIX_EPOCH)
         .unwrap_or_default()
         .as_secs();
-    let dest = backup_dir.join(format!("{}_{}", timestamp, file_name));
+    let dest = backup_dir.join(format!("{timestamp}_{file_name}"));
     match fs::copy(src, &dest) {
-        Ok(_) => log::info!("Backed up {:?} -> {:?}", src, dest),
-        Err(e) => log::error!("Failed to backup {:?}: {:?}", src, e),
+        Ok(_) => log::info!("Backed up {} -> {}", src.display(), dest.display()),
+        Err(e) => log::error!("Failed to backup {}: {:?}", src.display(), e),
     }
 }
 
@@ -73,14 +77,18 @@ fn main() -> Result<()> {
 
     log::info!("Watching path: {}", &watch_path);
     log::info!("Backups directory: {}", &backup_path);
-    log::info!("Max saves per file: {}", max_saves);
+    log::info!("Max saves per file: {max_saves}");
 
     let backup_path = Path::new(&backup_path);
     if !backup_path.exists() {
         match fs::create_dir(backup_path) {
-            Ok(_) => log::info!("Created backup directory: {}", &backup_path.display()),
+            Ok(()) => log::info!("Created backup directory: {}", &backup_path.display()),
             Err(error) => {
-                log::error!("Created backup directory: {} - {:?}", &backup_path.display(), error);
+                log::error!(
+                    "Created backup directory: {} - {:?}",
+                    &backup_path.display(),
+                    error
+                );
                 return Err(Error::io(error));
             }
         }
@@ -101,17 +109,16 @@ fn main() -> Result<()> {
                                 paths_to_backup.insert(path.clone());
                             }
                         }
-                        _ => ()
+                        _ => (),
                     }
                 }
                 for path in paths_to_backup {
-                    log::info!("Backing up {:?}", &path);
                     backup_file(&path, backup_path, max_saves);
                 }
-            },
+            }
             Err(errors) => {
                 for e in errors {
-                    log::error!("watch error: {:?}", e);
+                    log::error!("watch error: {e:?}");
                 }
             }
         }
