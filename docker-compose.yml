@@ -3,7 +3,7 @@ services:
     build:
       context: ./terraria-server
       args:
-        TERRARIA_VERSION: ${TERRARIA_VERSION:-1455}
+        TERRARIA_VERSION: ${TERRARIA_VERSION:-1456}
     image: terraria-server:latest
     container_name: terraria-server
     restart: unless-stopped
@@ -28,8 +28,7 @@ services:
     depends_on:
       - terraria-server
     environment:
-      - TCP_GUARD_MAX_CONN=${TCP_GUARD_MAX_CONN:-2}
-      - TCP_GUARD_PROXY_TIMEOUT=${TCP_GUARD_PROXY_TIMEOUT:-3h}
+      - TCP_GUARD_PROXY_TIMEOUT=${TCP_GUARD_PROXY_TIMEOUT:-30m}
       - TCP_GUARD_CONNECT_TIMEOUT=${TCP_GUARD_CONNECT_TIMEOUT:-5s}
       - TCP_GUARD_PREREAD_TIMEOUT=${TCP_GUARD_PREREAD_TIMEOUT:-5s}
     networks:
@@ -39,13 +38,13 @@ services:
   backups:
     image: gitfrog/terraria-backups:latest
     container_name: terraria-backups
-    restart: unless-stopped
+    restart: "no"
     volumes:
       - ${TERRARIA_WORLDS_DIR}:${TERRARIA_WORLDS_DIR}:ro
-      - ${BACKUP_WORLDS_DIR}:${BACKUP_WORLDS_DIR}
+      - ${BACKUP_WORLDS_DIR:-/opt/terraria/backups}:${BACKUP_WORLDS_DIR:-/opt/terraria/backups}
     environment:
       - TERRARIA_WORLDS_DIR=${TERRARIA_WORLDS_DIR}
-      - BACKUP_WORLDS_DIR=${BACKUP_WORLDS_DIR}
+      - BACKUP_WORLDS_DIR=${BACKUP_WORLDS_DIR:-/opt/terraria/backups}
       - MAX_SAVES=${MAX_SAVES:-10}
 
   playit:
