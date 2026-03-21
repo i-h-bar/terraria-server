@@ -81,11 +81,11 @@ fn main() -> Result<()> {
 
     let backup_path = Path::new(&backup_path);
     if !backup_path.exists() {
-        match fs::create_dir(backup_path) {
+        match fs::create_dir_all(backup_path) {
             Ok(()) => log::info!("Created backup directory: {}", &backup_path.display()),
             Err(error) => {
                 log::error!(
-                    "Created backup directory: {} - {:?}",
+                    "Error creating backup directory: {} - {:?}",
                     &backup_path.display(),
                     error
                 );
