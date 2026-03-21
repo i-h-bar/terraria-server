@@ -46,6 +46,7 @@ services:
       - TERRARIA_WORLDS_DIR=${TERRARIA_WORLDS_DIR}
       - BACKUP_WORLDS_DIR=${BACKUP_WORLDS_DIR:-/opt/terraria/backups}
       - MAX_SAVES=${MAX_SAVES:-10}
+      - RUST_LOG=${RUST_LOG:-info}
 
   playit:
     image: ghcr.io/playit-cloud/playit-agent:latest
