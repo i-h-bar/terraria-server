@@ -1,2 +1,6 @@
 .env
 .idea
+
+backups/*
+test/*
+target/*

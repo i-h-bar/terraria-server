@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "packages/backups",
+]
+resolver = "2"
+
+[workspace.dependencies]
