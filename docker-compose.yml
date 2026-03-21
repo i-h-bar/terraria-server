@@ -36,6 +36,18 @@ services:
       terraria_network:
         ipv4_address: ${TCP_GUARD_IP:-172.18.0.10}
 
+  backups:
+    image: gitfrog/terraria-backups:latest
+    container_name: terraria-backups
+    restart: unless-stopped
+    volumes:
+      - ${TERRARIA_WORLDS_DIR}:${TERRARIA_WORLDS_DIR}:ro
+      - ${BACKUP_WORLDS_DIR}:${BACKUP_WORLDS_DIR}
+    environment:
+      - TERRARIA_WORLDS_DIR=${TERRARIA_WORLDS_DIR}
+      - BACKUP_WORLDS_DIR=${BACKUP_WORLDS_DIR}
+      - MAX_SAVES=${MAX_SAVES:-10}
+
   playit:
     image: ghcr.io/playit-cloud/playit-agent:latest
     container_name: playit-tunnel
